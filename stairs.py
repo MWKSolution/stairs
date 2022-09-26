@@ -81,36 +81,40 @@ class Stairs:
     def get_tree_recur(self):
         tree = Node(self.steps, self.n)
         possibles = tree.get_possible_recur([])
-        return self.get_values_from_tree(possibles)
+        return possibles, self.get_values_from_tree(possibles)
 
     @timer
     def get_tree_iter(self):
         tree = Node(self.steps, self.n)
         possibles = tree.get_possible_iter()
-        return self.get_values_from_tree(possibles)
+        return possibles, self.get_values_from_tree(possibles)
 
     @timer
     def get_full_recur(self):
         d = deque()
         back_poss_positons, _ = self.full_recur(self.n, self.steps, [], d)
-        return self.get_values_from_full_recur(back_poss_positons)
+        t = []
+        for i in back_poss_positons:
+            l = list(i)
+            l.reverse()
+            t.append(l)
+        possibles = [[j-k for j, k in zip(i[1:], i[:-1])] for i in t]
+        return possibles, self.get_values_from_full_recur(back_poss_positons)
 
 
 if __name__ == '__main__':
 
-    stairs = [10, 15, 25]
+    stairs = [10, 15, 25, 45]
     steps = [1, 2]
 
     s = Stairs(stairs, steps)
-    l1 = s.get_tree_recur()
-    print(l1)
-    print('MIN: ', min(l1) if l1 else 'No way!')
-    l2 = s.get_tree_iter()
-    print(l2)
-    print('MIN: ', min(l2) if l2 else 'No way!')
-    l3 = s.get_full_recur()
-    print(l3)
-    print('MIN: ', min(l3) if l3 else 'No way!')
+    x1 = s.get_tree_recur()
+    x2 = s.get_tree_iter()
+    x3 = s.get_full_recur()
+    for i in [x1, x2, x3]:
+        print('Possibles: ', i[0])
+        print('Values: ', i[1])
+        print('MIN: ', min(i[1]) if i[1] else 'No way!')
 
 
 
