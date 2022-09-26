@@ -104,7 +104,7 @@ class Stairs:
 
 if __name__ == '__main__':
 
-    stairs = [10, 15, 25, 45]
+    stairs = [10, 15, 25]
     steps = [1, 2]
 
     s = Stairs(stairs, steps)
